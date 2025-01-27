@@ -128,9 +128,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Antho-et-Phil.cpp" />
+    <ClCompile Include="RessourceLoader.cpp" />
     <ClCompile Include="Statistiques.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="RessourceLoader.h" />
     <ClInclude Include="Statistiques.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
