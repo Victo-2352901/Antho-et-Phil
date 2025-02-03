@@ -3,6 +3,7 @@
 #ifndef STATISTIQUES_H
 #define STATISTIQUES_H
 
+
 #include <vector>
 
 class Statistiques {
@@ -15,4 +16,19 @@ public:
 };
 
 #endif // STATISTIQUES_H
+
+using namespace std;
+class Statistiques
+{
+private:
+	
+public:
+	double Moyenne(double[]);
+	double Mediane(double[]);
+	double EcartType(double[]);
+
+	double DistanceEucli(double[]);
+	double DistanceMan(double[]);
+};	
+
 
