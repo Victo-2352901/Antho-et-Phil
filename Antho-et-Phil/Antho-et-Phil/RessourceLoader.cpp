@@ -1,4 +1,3 @@
-
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -7,6 +6,7 @@
 
 using namespace std;
 
+// Constructeur de ResourceLoader qui charge les données depuis un fichier CSV
 ResourceLoader::ResourceLoader(const string& fichier) {
     ifstream file(fichier);
     if (!file.is_open()) {
@@ -19,6 +19,7 @@ ResourceLoader::ResourceLoader(const string& fichier) {
         stringstream ss(ligne);
         string valeur;
 
+        // Lecture et conversion des valeurs séparées par des virgules
         getline(ss, valeur, ',');
         instance.aciditeFixe = stod(valeur);
 
@@ -52,12 +53,14 @@ ResourceLoader::ResourceLoader(const string& fichier) {
         getline(ss, valeur, ',');
         instance.alcool = stod(valeur);
 
+        // Ajout de l'instance au vecteur de données
         data.push_back(instance);
     }
     file.close();
 }
 
-void ResourceLoader::afficherDonnees() const {
+// Fonction pour afficher les données chargées dans la console
+void ResourceLoader::afficherDonnees()  {
     for (const auto& instance : data) {
         cout << "Acidité Fixe: " << instance.aciditeFixe << ", "
             << "Acidité Volatile: " << instance.aciditeVolatile << ", "
@@ -72,4 +75,3 @@ void ResourceLoader::afficherDonnees() const {
             << "Alcool: " << instance.alcool << "\n";
     }
 }
-
