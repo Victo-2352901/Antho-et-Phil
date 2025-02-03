@@ -37,7 +37,7 @@ double Statistiques::distanceEuclidienne(const std::vector<double>& point1, cons
         throw std::invalid_argument("Les points doivent avoir le même nombre de dimensions");
     }
     double somme = 0;
-    for (size_t i = 0; i < point1.size(); ++i) {
+    for (size_t i = 0; i < point1.size(); i++) {
         somme += (point1[i] - point2[i]) * (point1[i] - point2[i]);
     }
     return std::sqrt(somme);
@@ -48,7 +48,7 @@ double Statistiques::distanceManhattan(const std::vector<double>& point1, const 
         throw std::invalid_argument("Les points doivent avoir le même nombre de dimensions");
     }
     double somme = 0;
-    for (size_t i = 0; i < point1.size(); ++i) {
+    for (size_t i = 0; i < point1.size(); i++) {
         somme += std::abs(point1[i] - point2[i]);
     }
     return somme;
