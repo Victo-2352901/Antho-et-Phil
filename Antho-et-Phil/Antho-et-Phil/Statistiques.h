@@ -23,12 +23,12 @@ class Statistiques
 private:
 	
 public:
-	double Moyenne(double[]);
-	double Mediane(double[]);
-	double EcartType(double[]);
+	double moyenne(double[]);
+	double mediane(double[]);
+	double ecartType(double[]);
 
-	double DistanceEucli(double[]);
-	double DistanceMan(double[]);
+	double distanceEucli(double[]);
+	double distanceMan(double[]);
 };	
 
 
