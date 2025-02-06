@@ -3,32 +3,26 @@
 #ifndef STATISTIQUES_H
 #define STATISTIQUES_H
 
-
 #include <vector>
+using namespace std;
 
+// Classe contenant des fonctions statistiques utiles
 class Statistiques {
 public:
-    static double moyenne(const std::vector<double>& valeurs);
-    static double mediane(std::vector<double> valeurs);
-    static double ecartType(const std::vector<double>& valeurs);
-    static double distanceEuclidienne(const std::vector<double>& point1, const std::vector<double>& point2);
-    static double distanceManhattan(const std::vector<double>& point1, const std::vector<double>& point2);
+    // Calcule la moyenne d'un ensemble de valeurs
+    static double moyenne(const vector<double>& valeurs);
+
+    // Calcule la médiane d'un ensemble de valeurs
+    static double mediane(vector<double> valeurs);
+
+    // Calcule l'écart-type d'un ensemble de valeurs
+    static double ecartType(const vector<double>& valeurs);
+
+    // Calcule la distance euclidienne entre deux points
+    static double distanceEuclidienne(const vector<double>& point1, const vector<double>& point2);
+
+    // Calcule la distance de Manhattan entre deux points
+    static double distanceManhattan(const vector<double>& point1, const vector<double>& point2);
 };
 
 #endif // STATISTIQUES_H
-
-using namespace std;
-class Statistiques
-{
-private:
-	
-public:
-	double moyenne(double[]);
-	double mediane(double[]);
-	double ecartType(double[]);
-
-	double distanceEucli(double[]);
-	double distanceMan(double[]);
-};	
-
-

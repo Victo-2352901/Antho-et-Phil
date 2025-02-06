@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "RessourceLoader.h"
 
@@ -8,10 +7,10 @@ int main() {
     try {
         // Charger les données depuis un fichier CSV
         ResourceLoader loader("data.csv");
-        loader.afficherDonnees();
-
+        loader.afficherDonnees(); // Afficher les données chargées
     }
     catch (const exception& e) {
+        // Capture et affichage des erreurs en cas de problème avec le fichier
         cerr << "Erreur: " << e.what() << "\n";
     }
 

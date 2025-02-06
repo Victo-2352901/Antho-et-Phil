@@ -1,77 +1,82 @@
+#include "RessourceLoader.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
-#include "RessourceLoader.h"
 
 using namespace std;
 
-// Constructeur de ResourceLoader qui charge les données depuis un fichier CSV
-ResourceLoader::ResourceLoader(const string& fichier) {
+// Constructeur de ResourceLoader
+ResourceLoader::ResourceLoader(const string& fichier) : head(nullptr) {
     ifstream file(fichier);
     if (!file.is_open()) {
         throw runtime_error("Impossible d'ouvrir le fichier " + fichier);
     }
 
     string ligne;
+    Node* last = nullptr; // Pointeur vers le dernier élément inséré
+
     while (getline(file, ligne)) {
         Donnee instance;
         stringstream ss(ligne);
         string valeur;
 
-        // Lecture et conversion des valeurs séparées par des virgules
-        getline(ss, valeur, ',');
-        instance.aciditeFixe = stod(valeur);
+        // Lire chaque valeur séparée par une virgule
+        getline(ss, valeur, ','); instance.aciditeFixe = stod(valeur);
+        getline(ss, valeur, ','); instance.aciditeVolatile = stod(valeur);
+        getline(ss, valeur, ','); instance.aciditeCitrique = stod(valeur);
+        getline(ss, valeur, ','); instance.sucreResiduel = stod(valeur);
+        getline(ss, valeur, ','); instance.chlorure = stod(valeur);
+        getline(ss, valeur, ','); instance.dioxydeSoufreLibre = stod(valeur);
+        getline(ss, valeur, ','); instance.dioxydeSoufreTotal = stod(valeur);
+        getline(ss, valeur, ','); instance.densite = stod(valeur);
+        getline(ss, valeur, ','); instance.pH = stod(valeur);
+        getline(ss, valeur, ','); instance.sulfate = stod(valeur);
+        getline(ss, valeur, ','); instance.alcool = stod(valeur);
 
-        getline(ss, valeur, ',');
-        instance.aciditeVolatile = stod(valeur);
+        // Création du nouveau nœud
+        Node* newNode = new Node(instance);
 
-        getline(ss, valeur, ',');
-        instance.aciditeCitrique = stod(valeur);
-
-        getline(ss, valeur, ',');
-        instance.sucreResiduel = stod(valeur);
-
-        getline(ss, valeur, ',');
-        instance.chlorure = stod(valeur);
-
-        getline(ss, valeur, ',');
-        instance.dioxydeSoufreLibre = stod(valeur);
-
-        getline(ss, valeur, ',');
-        instance.dioxydeSoufreTotal = stod(valeur);
-
-        getline(ss, valeur, ',');
-        instance.densite = stod(valeur);
-
-        getline(ss, valeur, ',');
-        instance.pH = stod(valeur);
-
-        getline(ss, valeur, ',');
-        instance.sulfate = stod(valeur);
-
-        getline(ss, valeur, ',');
-        instance.alcool = stod(valeur);
-
-        // Ajout de l'instance au vecteur de données
-        data.push_back(instance);
+        // Insertion en fin de liste chaînée
+        if (!head) {
+            head = newNode;
+        }
+        else {
+            last->next = newNode;
+        }
+        last = newNode;
     }
+
     file.close();
 }
 
-// Fonction pour afficher les données chargées dans la console
-void ResourceLoader::afficherDonnees()  {
-    for (const auto& instance : data) {
-        cout << "Acidité Fixe: " << instance.aciditeFixe << ", "
-            << "Acidité Volatile: " << instance.aciditeVolatile << ", "
-            << "Acidité Citrique: " << instance.aciditeCitrique << ", "
-            << "Sucre Résiduel: " << instance.sucreResiduel << ", "
-            << "Chlorure: " << instance.chlorure << ", "
-            << "Dioxyde de Soufre Libre: " << instance.dioxydeSoufreLibre << ", "
-            << "Dioxyde de Soufre Total: " << instance.dioxydeSoufreTotal << ", "
-            << "Densité: " << instance.densite << ", "
-            << "pH: " << instance.pH << ", "
-            << "Sulfate: " << instance.sulfate << ", "
-            << "Alcool: " << instance.alcool << "\n";
+// Destructeur pour libérer la mémoire allouée dynamiquement
+ResourceLoader::~ResourceLoader() {
+    Node* current = head;
+    while (current) {
+        Node* nextNode = current->next;
+        delete current;
+        current = nextNode;
     }
+}
+
+// Affichage des données de la liste chaînée
+void ResourceLoader::afficherDonnees() {
+    Node* current = head;
+    while (current) {
+        cout << "Acidité Fixe: " << current->data.aciditeFixe << ", "
+            << "Acidité Volatile: " << current->data.aciditeVolatile << ", "
+            << "Alcool: " << current->data.alcool << "\n";
+        current = current->next;
+    }
+}
+
+// Retourne l'ensemble des données sous forme chaînée
+Node* ResourceLoader::getTrainDataLinked() {
+    return head;
+}
+
+// Retourne un sous-ensemble des données comme test (moitié des données)
+Node* ResourceLoader::getTestDataLinked() {
+    if (!head) return nullptr;
 }
