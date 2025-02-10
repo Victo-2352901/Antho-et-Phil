@@ -2,85 +2,73 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <stdexcept>
 
 using namespace std;
 
-// Constructeur de ResourceLoader
-//Initialise head à nullptr (la liste chaînée est vide au début).
-ResourceLoader::ResourceLoader(const string& fichier) : head(nullptr) {
+// Charger les données depuis un fichier CSV
+vector<Donnee> chargerDonnees(const string& fichier) {
+    vector<Donnee> donnees;
     ifstream file(fichier);
+
     if (!file.is_open()) {
-        throw runtime_error("Impossible d'ouvrir le fichier " + fichier);
+        cout << "Erreur : Impossible d'ouvrir le fichier " << fichier << endl;
+        return donnees;
     }
 
     string ligne;
-    Node* last = nullptr; // Pointeur vers le dernier élément inséré
-
-    //stringstream ss(ligne); → Permet de découper la ligne en valeurs séparées par ,.
-  //  getline(ss, valeur, ',') → Récupère chaque valeur et la convertit(stod()) en double.
-    
     while (getline(file, ligne)) {
         Donnee instance;
         stringstream ss(ligne);
         string valeur;
 
-        // Lire chaque valeur séparée par une virgule
-        getline(ss, valeur, ','); instance.aciditeFixe = stod(valeur);
-        getline(ss, valeur, ','); instance.aciditeVolatile = stod(valeur);
-        getline(ss, valeur, ','); instance.aciditeCitrique = stod(valeur);
-        getline(ss, valeur, ','); instance.sucreResiduel = stod(valeur);
-        getline(ss, valeur, ','); instance.chlorure = stod(valeur);
-        getline(ss, valeur, ','); instance.dioxydeSoufreLibre = stod(valeur);
-        getline(ss, valeur, ','); instance.dioxydeSoufreTotal = stod(valeur);
-        getline(ss, valeur, ','); instance.densite = stod(valeur);
-        getline(ss, valeur, ','); instance.pH = stod(valeur);
-        getline(ss, valeur, ','); instance.sulfate = stod(valeur);
-        getline(ss, valeur, ','); instance.alcool = stod(valeur);
+        if (getline(ss, valeur, ',')) instance.aciditeFixe = stod(valeur);
+        if (getline(ss, valeur, ',')) instance.aciditeVolatile = stod(valeur);
+        if (getline(ss, valeur, ',')) instance.aciditeCitrique = stod(valeur);
+        if (getline(ss, valeur, ',')) instance.sucreResiduel = stod(valeur);
+        if (getline(ss, valeur, ',')) instance.chlorure = stod(valeur);
+        if (getline(ss, valeur, ',')) instance.dioxydeSoufreLibre = stod(valeur);
+        if (getline(ss, valeur, ',')) instance.dioxydeSoufreTotal = stod(valeur);
+        if (getline(ss, valeur, ',')) instance.densite = stod(valeur);
+        if (getline(ss, valeur, ',')) instance.pH = stod(valeur);
+        if (getline(ss, valeur, ',')) instance.sulfate = stod(valeur);
+        if (getline(ss, valeur, ',')) instance.alcool = stod(valeur);
 
-        // Création du nouveau nœud
-        Node* newNode = new Node(instance);
-
-        // Insertion en fin de liste chaînée
-        if (!head) {
-            head = newNode;
-        }
-        else {
-            last->next = newNode;
-        }
-        last = newNode;
+        donnees.push_back(instance);
     }
 
     file.close();
+    return donnees;
 }
 
-// Destructeur pour libérer la mémoire allouée dynamiquement
-ResourceLoader::~ResourceLoader() {
-    Node* current = head;
-    while (current) {
-        Node* nextNode = current->next;
-        delete current;
-        current = nextNode;
+// Retourne k % des données pour l'entraînement
+vector<Donnee> getTrainData(const vector<Donnee>& donnees, double k) {
+    vector<Donnee> trainData;
+    int trainSize = donnees.size() * k;
+
+    for (int i = 0; i < trainSize; i++) {
+        trainData.push_back(donnees[i]);
     }
+
+    return trainData;
 }
 
-// Affichage des données de la liste chaînée
-void ResourceLoader::afficherDonnees() {
-    Node* current = head;
-    while (current) {
-        cout << "Acidité Fixe: " << current->data.aciditeFixe << ", "
-            << "Acidité Volatile: " << current->data.aciditeVolatile << ", "
-            << "Alcool: " << current->data.alcool << "\n";
-        current = current->next;
+// Retourne (1 - k) % des données pour le test
+vector<Donnee> getTestData(const vector<Donnee>& donnees, double k) {
+    vector<Donnee> testData;
+    int trainSize = donnees.size() * k;
+
+    for (int i = trainSize; i < donnees.size(); i++) {
+        testData.push_back(donnees[i]);
     }
+
+    return testData;
 }
 
-// Retourne l'ensemble des données sous forme chaînée
-Node* ResourceLoader::getTrainDataLinked() {
-    return head;
-}
-
-// Retourne un sous-ensemble des données comme test (moitié des données)
-Node* ResourceLoader::getTestDataLinked() {
-    if (!head) return nullptr;
+// Affiche les données
+void afficherDonnees(const vector<Donnee>& donnees) {
+    for (int i = 0; i < donnees.size(); i++) {
+        cout << "Acidité Fixe: " << donnees[i].aciditeFixe << ", "
+            << "Acidité Volatile: " << donnees[i].aciditeVolatile << ", "
+            << "Alcool: " << donnees[i].alcool << endl;
+    }
 }
