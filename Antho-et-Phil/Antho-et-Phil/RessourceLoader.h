@@ -1,12 +1,8 @@
 ﻿#pragma once
-#ifndef RESOURCELOADER_H
-#define RESOURCELOADER_H
-
+#include <vector>
 #include <string>
 
-//#pragma once : Empêche l’inclusion multiple du fichier (alternative à #ifndef ... #define ...).
-// #ifndef RESOURCELOADER_H / #define RESOURCELOADER_H : Définit une protection d’inclusion multiple.
-// Structure représentant une ligne de données dans le fichier CSV
+// Structure représentant une ligne de données
 struct Donnee {
     double aciditeFixe;
     double aciditeVolatile;
@@ -21,35 +17,14 @@ struct Donnee {
     double alcool;
 };
 
-// Structure pour la liste chaînée
-//Structure Node : Un élément d’une liste chaînée qui contient une Donnee et un pointeur vers le prochain élément (next).
-//Node(const Donnee& d) : data(d), next(nullptr) {} → Initialise un nœud avec des données et met next à nullptr.
+// Fonction pour charger les données depuis un fichier CSV
+std::vector<Donnee> chargerDonnees(const std::string& fichier);
 
-struct Node {
-    Donnee data;
-    Node* next;
-    Node(const Donnee& d) : data(d), next(nullptr) {}
-};
+// Fonction pour récupérer k % des données pour l'entraînement
+std::vector<Donnee> getTrainData(const std::vector<Donnee>& donnees, double k);
 
-class ResourceLoader {
-private:
-    Node* head;  // Pointeur vers le premier élément de la liste chaînée
-                //head: Pointeur vers le premier élément de la liste chaînée.
-public:
-    // Constructeur prenant un fichier CSV en entrée
-    ResourceLoader(const std::string& fichier);
+// Fonction pour récupérer (1 - k) % des données pour le test
+std::vector<Donnee> getTestData(const std::vector<Donnee>& donnees, double k);
 
-    // Destructeur pour libérer la mémoire
-    ~ResourceLoader();
-
-    // Afficher toutes les données chargées
-    void afficherDonnees();
-
-    // Retourner l'ensemble des données sous forme chaînée (train data)
-    Node* getTrainDataLinked();
-
-    // Retourner un sous-ensemble des données pour les tests
-    Node* getTestDataLinked();
-};
-
-#endif // RESOURCELOADER_H
+// Fonction pour afficher les données
+void afficherDonnees(const std::vector<Donnee>& donnees);

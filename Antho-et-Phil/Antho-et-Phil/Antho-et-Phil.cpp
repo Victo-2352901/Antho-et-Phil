@@ -4,7 +4,7 @@
 using namespace std;
 
 int main() {
-    string fichier = "data.csv";  // Nom du fichier CSV
+    string fichier = "binary-winequality-white.csv";  // Nom du fichier CSV
     vector<Donnee> donnees = chargerDonnees(fichier);
 
     if (donnees.size() == 0) {
