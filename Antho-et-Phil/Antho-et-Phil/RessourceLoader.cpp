@@ -1,4 +1,4 @@
-#include "RessourceLoader.h"
+ï»¿#include "RessourceLoader.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -7,6 +7,7 @@
 using namespace std;
 
 // Constructeur de ResourceLoader
+//Initialise head Ã  nullptr (la liste chaÃ®nÃ©e est vide au dÃ©but).
 ResourceLoader::ResourceLoader(const string& fichier) : head(nullptr) {
     ifstream file(fichier);
     if (!file.is_open()) {
@@ -14,14 +15,17 @@ ResourceLoader::ResourceLoader(const string& fichier) : head(nullptr) {
     }
 
     string ligne;
-    Node* last = nullptr; // Pointeur vers le dernier élément inséré
+    Node* last = nullptr; // Pointeur vers le dernier Ã©lÃ©ment insÃ©rÃ©
 
+    //stringstream ss(ligne); â†’ Permet de dÃ©couper la ligne en valeurs sÃ©parÃ©es par ,.
+  //  getline(ss, valeur, ',') â†’ RÃ©cupÃ¨re chaque valeur et la convertit(stod()) en double.
+    
     while (getline(file, ligne)) {
         Donnee instance;
         stringstream ss(ligne);
         string valeur;
 
-        // Lire chaque valeur séparée par une virgule
+        // Lire chaque valeur sÃ©parÃ©e par une virgule
         getline(ss, valeur, ','); instance.aciditeFixe = stod(valeur);
         getline(ss, valeur, ','); instance.aciditeVolatile = stod(valeur);
         getline(ss, valeur, ','); instance.aciditeCitrique = stod(valeur);
@@ -34,10 +38,10 @@ ResourceLoader::ResourceLoader(const string& fichier) : head(nullptr) {
         getline(ss, valeur, ','); instance.sulfate = stod(valeur);
         getline(ss, valeur, ','); instance.alcool = stod(valeur);
 
-        // Création du nouveau nœud
+        // CrÃ©ation du nouveau nÅ“ud
         Node* newNode = new Node(instance);
 
-        // Insertion en fin de liste chaînée
+        // Insertion en fin de liste chaÃ®nÃ©e
         if (!head) {
             head = newNode;
         }
@@ -50,7 +54,7 @@ ResourceLoader::ResourceLoader(const string& fichier) : head(nullptr) {
     file.close();
 }
 
-// Destructeur pour libérer la mémoire allouée dynamiquement
+// Destructeur pour libÃ©rer la mÃ©moire allouÃ©e dynamiquement
 ResourceLoader::~ResourceLoader() {
     Node* current = head;
     while (current) {
@@ -60,23 +64,23 @@ ResourceLoader::~ResourceLoader() {
     }
 }
 
-// Affichage des données de la liste chaînée
+// Affichage des donnÃ©es de la liste chaÃ®nÃ©e
 void ResourceLoader::afficherDonnees() {
     Node* current = head;
     while (current) {
-        cout << "Acidité Fixe: " << current->data.aciditeFixe << ", "
-            << "Acidité Volatile: " << current->data.aciditeVolatile << ", "
+        cout << "AciditÃ© Fixe: " << current->data.aciditeFixe << ", "
+            << "AciditÃ© Volatile: " << current->data.aciditeVolatile << ", "
             << "Alcool: " << current->data.alcool << "\n";
         current = current->next;
     }
 }
 
-// Retourne l'ensemble des données sous forme chaînée
+// Retourne l'ensemble des donnÃ©es sous forme chaÃ®nÃ©e
 Node* ResourceLoader::getTrainDataLinked() {
     return head;
 }
 
-// Retourne un sous-ensemble des données comme test (moitié des données)
+// Retourne un sous-ensemble des donnÃ©es comme test (moitiÃ© des donnÃ©es)
 Node* ResourceLoader::getTestDataLinked() {
     if (!head) return nullptr;
 }
